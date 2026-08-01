@@ -1,0 +1,22 @@
+{
+  "name": "read-image",
+  "version": "0.1.0",
+  "description": "让 Codex 查看图片：图片转 base64 后调用纯视觉模型，把识别结果交回主模型使用。",
+  "author": {
+    "name": "Jedeiah"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "图片读取 (Read Image)",
+    "shortDescription": "通过纯视觉模型查看图片，主模型无需图像能力",
+    "longDescription": "把图片文件 base64 编码后发送给配置的纯视觉模型（OpenAI 兼容接口），再把识别结果返回给主模型，让 Codex 能看懂截图、图表、报错等信息。",
+    "developerName": "Jedeiah",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "查看这张图片并描述内容：<图片路径>",
+      "帮我识别截图里的报错信息",
+      "读取这张图片中的文字"
+    ]
+  }
+}
