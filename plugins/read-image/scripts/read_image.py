@@ -142,24 +142,33 @@ def call_vision_model(
         method="POST",
     )
     retry_codes = {429, 500, 502, 503, 504}
-    max_retries = 3
+    max_retries = 4
+    last_error = ""
     for attempt in range(max_retries):
         try:
             with urllib.request.urlopen(request, timeout=180) as response:
                 result = json.loads(response.read().decode("utf-8"))
-            break
         except urllib.error.HTTPError as error:
             detail = error.read().decode("utf-8", errors="replace")[:500]
-            if error.code in retry_codes and attempt < max_retries - 1:
-                wait = 3 * (attempt + 1)
-                sys.stderr.write(
-                    f"接口返回 {error.code}，{wait} 秒后重试（第 {attempt + 1} 次）\n"
-                )
-                time.sleep(wait)
-                continue
-            raise RuntimeError(
-                f"视觉模型接口返回错误 {error.code}: {detail}"
-            ) from error
+            last_error = f"接口返回错误 {error.code}: {detail}"
+            retryable = error.code in retry_codes
+        except urllib.error.URLError as error:
+            last_error = f"网络连接失败: {error.reason}"
+            retryable = True
+        else:
+            if isinstance(result, dict) and result.get("error"):
+                last_error = "接口返回业务错误: " + json.dumps(
+                    result["error"], ensure_ascii=False
+                )[:500]
+                retryable = True
+            else:
+                break
+        if attempt < max_retries - 1 and retryable:
+            wait = 3 * (attempt + 1)
+            sys.stderr.write(f"{last_error}，{wait} 秒后重试（第 {attempt + 1} 次）\n")
+            time.sleep(wait)
+            continue
+        raise RuntimeError(last_error)
     try:
         content = result["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError):
