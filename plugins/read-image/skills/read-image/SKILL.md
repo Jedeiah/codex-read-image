@@ -32,8 +32,9 @@ description: 当用户要求查看、读取、描述或分析图片/截图时使
 
 ## 配置检查（首次使用必须）
 
-**推荐方式**：编辑 `~/.config/read-image/.env`（用户级配置，插件升级时不会被覆盖）。
-如果该文件不存在，先创建目录和文件；也可以直接编辑插件目录里的 `.env` 模板。
+**推荐方式**：插件目录里的 `.env`（卸载插件时随插件一起删除）。首次使用如果只有
+`.env.example` 模板，先复制一份：`cp 插件目录/.env.example 插件目录/.env`，再编辑填写。
+也可以复制一份到 `~/.config/read-image/.env` 作为备用（插件升级时不会被覆盖）。
 两者结构相同，填好即可，不需要动 shell 配置：
 
 | 环境变量 | 必填 | 说明 |
@@ -42,11 +43,9 @@ description: 当用户要求查看、读取、描述或分析图片/截图时使
 | `READ_IMAGE_BASE_URL` | 否 | OpenAI 兼容接口地址，默认 `https://api.openai.com/v1` |
 | `READ_IMAGE_MODEL` | 否 | 视觉模型名，默认 `gpt-4o-mini` |
 
-常见可用的视觉模型示例：`gpt-4o-mini` / `gpt-4o`（OpenAI）、`qwen-vl-max`（通义千问，DashScope 兼容模式）、`glm-4v-plus`（智谱）、SiliconFlow 上各家开源视觉模型。
+常见可用的视觉模型示例：`gpt-4o-mini` / `gpt-4o`（OpenAI）、`qwen-vl-max`（通义千问，DashScope 兼容模式）、`glm-4.6v-flash` / `glm-4v-flash`（智谱，免费）、SiliconFlow 上各家开源视觉模型。
 
-`.env` 示例（复制到 `~/plugins/read-image/.env` 后填值）：
-
-推荐路径：`~/.config/read-image/.env`
+`.env` 示例（编辑插件目录里的 `.env` 填值）：
 
 ```bash
 READ_IMAGE_API_KEY=你的密钥
@@ -54,7 +53,7 @@ READ_IMAGE_MODEL=qwen-vl-max
 READ_IMAGE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 ```
 
-如果都没有 `READ_IMAGE_API_KEY`，脚本会明确报错。此时应告诉用户按上面示例补上，改完重启 Codex 再试。配置优先级：命令行参数 > 环境变量 > `~/.config/read-image/.env` > 插件目录 `.env` > 内置默认值。
+如果都没有 `READ_IMAGE_API_KEY`，脚本会明确报错。此时应告诉用户按上面示例补上，改完重启 Codex 再试。配置优先级：命令行参数 > 环境变量 > 插件目录 `.env` > `~/.config/read-image/.env` > 内置默认值。`.env` 不在 Git 仓库里，插件升级不会覆盖它。
 
 > 当前 DeepSeek 接口不支持图片输入，需要另配一个支持视觉的模型服务，在 `.env` 里填写即可。
 

@@ -4,8 +4,8 @@
 配置（按优先级从高到低）：
   1. 命令行参数（--api-key / --base-url / --model）
   2. 环境变量 READ_IMAGE_API_KEY / READ_IMAGE_BASE_URL / READ_IMAGE_MODEL
-  3. ~/.config/read-image/.env（用户级配置，升级插件不会被覆盖，推荐）
-  4. 插件根目录的 .env 文件（仓库自带模板）
+  3. 插件根目录的 .env 文件（插件自带配置，随插件卸载一起删除，推荐）
+  4. ~/.config/read-image/.env（可选备用位置，插件升级不会覆盖）
   5. 内置默认值：base_url 为 https://api.openai.com/v1，model 为 gpt-4o-mini
 
 用法：
@@ -48,8 +48,8 @@ def load_dotenv(path: Path) -> dict[str, str]:
     return result
 
 
-# 用户级配置优先于插件目录内的模板，真实环境变量再覆盖两者
-_DOTENV = {**load_dotenv(ENV_FILE), **load_dotenv(USER_ENV_FILE)}
+# 插件目录内的配置优先于用户级备用配置，真实环境变量再覆盖两者
+_DOTENV = {**load_dotenv(USER_ENV_FILE), **load_dotenv(ENV_FILE)}
 _CONFIG = {**_DOTENV, **os.environ}
 DEFAULT_BASE_URL = _CONFIG.get("READ_IMAGE_BASE_URL", "https://api.openai.com/v1")
 DEFAULT_MODEL = _CONFIG.get("READ_IMAGE_MODEL", "gpt-4o-mini")
@@ -93,7 +93,7 @@ def call_vision_model(
     if not api_key:
         raise RuntimeError(
             "未配置视觉模型 API 密钥。请编辑 "
-            f"{USER_ENV_FILE}（或 {ENV_FILE}）中的 READ_IMAGE_API_KEY，"
+            f"{ENV_FILE}（或备用位置 {USER_ENV_FILE}）中的 READ_IMAGE_API_KEY，"
             "或设置环境变量 READ_IMAGE_API_KEY，或使用 --api-key 参数。"
         )
     base = base_url.rstrip("/")

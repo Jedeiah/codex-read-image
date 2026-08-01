@@ -27,7 +27,8 @@ codex
 
 ## 配置（每个人填自己的视觉模型密钥）
 
-编辑 `~/.config/read-image/.env`（推荐，升级插件不会被覆盖），或插件目录里的 `.env`：
+编辑**插件目录里的 `.env`**（卸载插件/移除市场时随插件一起删除）。首次使用若只有
+`.env.example` 模板，先复制：`cp plugins/read-image/.env.example plugins/read-image/.env`，再填写：
 
 ```bash
 READ_IMAGE_API_KEY=你的密钥
@@ -35,11 +36,16 @@ READ_IMAGE_MODEL=qwen-vl-max
 READ_IMAGE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 ```
 
-配置优先级：命令行参数 > 环境变量 > `~/.config/read-image/.env` > 插件目录 `.env` > 默认值。
+`.env` 不在 Git 仓库里，插件升级不会覆盖你的配置；想额外留一份备份，可复制到
+`~/.config/read-image/.env` 作为备用。
+
+配置优先级：命令行参数 > 环境变量 > 插件目录 `.env` > `~/.config/read-image/.env` > 默认值。
 默认模型 `gpt-4o-mini`、默认接口 `https://api.openai.com/v1`。
 
 常见视觉模型：OpenAI `gpt-4o-mini` / `gpt-4o`、通义千问 `qwen-vl-max`（DashScope 兼容模式）、
-智谱 `glm-4v-plus`、硅基流动上的开源视觉模型。
+智谱 `glm-4.6v-flash` / `glm-4v-flash`（免费）、硅基流动上的开源视觉模型。
+
+卸载插件 / 移除市场时，插件目录连同其中的 `.env` 配置会一起被删除。
 
 ## 使用
 
