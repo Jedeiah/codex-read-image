@@ -67,7 +67,6 @@ python3 plugins/read-image/scripts/read_image.py /path/to/image.png --prompt "�
 
 - 支持 png / jpg / jpeg / webp / gif，可一次传多张图；
 - 图片只会发送到你配置的视觉模型服务，不经过其他服务器；
-- `.env` 里的密钥请自行保管，不要把包含真实密钥的配置提交到仓库。
 
 ## License
 
