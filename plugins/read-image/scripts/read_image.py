@@ -96,7 +96,8 @@ def call_vision_model(
             f"{USER_ENV_FILE}（或 {ENV_FILE}）中的 READ_IMAGE_API_KEY，"
             "或设置环境变量 READ_IMAGE_API_KEY，或使用 --api-key 参数。"
         )
-    url = base_url.rstrip("/") + "/chat/completions"
+    base = base_url.rstrip("/")
+    url = base if base.endswith("/chat/completions") else base + "/chat/completions"
     payload = {
         "model": model,
         "max_tokens": max_tokens,
