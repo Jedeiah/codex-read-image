@@ -1,6 +1,6 @@
 {
   "name": "read-image",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "让 Codex 查看图片：图片转 base64 后调用纯视觉模型，把识别结果交回主模型使用。",
   "author": {
     "name": "Jedeiah"

@@ -14,7 +14,7 @@ description: 当用户要求查看、读取、描述或分析图片/截图时使
 ## 工作流程
 
 1. **确认图片存在**：检查用户给的路径是否真实存在，支持 png / jpg / jpeg / webp / gif。
-2. **运行脚本**（脚本会先 base64 编码图片，再调用视觉模型）。脚本位于本技能同级目录 `../scripts/read_image.py`（相对于本 SKILL.md 所在目录的上一级）：
+2. **运行脚本**（脚本会先 base64 编码图片，再调用视觉模型）。脚本位于插件目录的 `scripts/` 下，相对于本 SKILL.md（`skills/read-image/`）是 `../../scripts/read_image.py`：
 
    ```bash
    python3 <插件目录>/scripts/read_image.py <图片路径> [更多图片...] --prompt "<用户的具体问题>"
@@ -42,6 +42,7 @@ description: 当用户要求查看、读取、描述或分析图片/截图时使
 | `READ_IMAGE_API_KEY` | 是 | 视觉模型服务的 API 密钥 |
 | `READ_IMAGE_BASE_URL` | 否 | OpenAI 兼容接口地址，默认 `https://api.openai.com/v1` |
 | `READ_IMAGE_MODEL` | 否 | 视觉模型名，默认 `gpt-4o-mini` |
+| `READ_IMAGE_THINKING` | 否 | 思考模式 `auto`/`on`/`off`，默认 `auto`（glm 系列自动开启，其他模型关闭） |
 
 常见可用的视觉模型示例：`gpt-4o-mini` / `gpt-4o`（OpenAI）、`qwen-vl-max`（通义千问，DashScope 兼容模式）、`glm-4.6v-flash` / `glm-4v-flash`（智谱，免费）、SiliconFlow 上各家开源视觉模型。
 
@@ -49,11 +50,12 @@ description: 当用户要求查看、读取、描述或分析图片/截图时使
 
 ```bash
 READ_IMAGE_API_KEY=你的密钥
-READ_IMAGE_MODEL=qwen-vl-max
-READ_IMAGE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+READ_IMAGE_MODEL=glm-4.6v-flash
+READ_IMAGE_BASE_URL=https://open.bigmodel.cn/api/paas/v4
+READ_IMAGE_THINKING=auto
 ```
 
-如果都没有 `READ_IMAGE_API_KEY`，脚本会明确报错。此时应告诉用户按上面示例补上，改完重启 Codex 再试。配置优先级：命令行参数 > 环境变量 > 插件目录 `.env` > `~/.config/read-image/.env` > 内置默认值。`.env` 不在 Git 仓库里，插件升级不会覆盖它。
+上面是智谱免费模型示例（GLM-4.6V-Flash）；不填时脚本默认使用 `gpt-4o-mini` + `https://api.openai.com/v1`。如果都没有 `READ_IMAGE_API_KEY`，脚本会明确报错。此时应告诉用户按上面示例补上，改完重启 Codex 再试。配置优先级：命令行参数 > 环境变量 > 插件目录 `.env` > `~/.config/read-image/.env` > 内置默认值。`.env` 不在 Git 仓库里，插件升级不会覆盖它。
 
 > 当前 DeepSeek 接口不支持图片输入，需要另配一个支持视觉的模型服务，在 `.env` 里填写即可。
 

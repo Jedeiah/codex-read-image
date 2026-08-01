@@ -32,9 +32,13 @@ codex
 
 ```bash
 READ_IMAGE_API_KEY=你的密钥
-READ_IMAGE_MODEL=qwen-vl-max
-READ_IMAGE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
+READ_IMAGE_MODEL=glm-4.6v-flash
+READ_IMAGE_BASE_URL=https://open.bigmodel.cn/api/paas/v4
+READ_IMAGE_THINKING=auto
 ```
+
+上面是智谱免费模型示例（GLM-4.6V-Flash，`thinking=auto` 会自动开启思考模式）；
+不填时默认使用 `gpt-4o-mini` + `https://api.openai.com/v1`。
 
 `.env` 不在 Git 仓库里，插件升级不会覆盖你的配置；想额外留一份备份，可复制到
 `~/.config/read-image/.env` 作为备用。
